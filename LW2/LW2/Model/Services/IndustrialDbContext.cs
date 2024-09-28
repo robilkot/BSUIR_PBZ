@@ -10,7 +10,6 @@ namespace LW2.Model.Services
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<Failure> Failures { get; set; }
         public DbSet<Inspection> Inspections { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.ApplyConfiguration();

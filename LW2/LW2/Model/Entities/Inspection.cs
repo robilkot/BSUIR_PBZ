@@ -11,9 +11,7 @@ namespace LW2.Model.Entities
         public string? FailureReason { get; set; }
         [Column("result")]
         public required string Result { get; set; }
-        [Column("employee_id")]
-        public int? EmployeeId { get; set; }
-        [Column("equipment_id")]
-        public required int EquipmentId { get; set; }
+        public Employee? Employee { get; set; }
+        public required Equipment Equipment { get; set; }
     }
 }

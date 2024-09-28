@@ -1,7 +1,7 @@
-﻿using LW2.Model.Services;
+﻿using LW2.Model.Interfaces;
+using LW2.Model.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MySqlConnector;
 
 namespace LW2
 {
@@ -18,37 +18,17 @@ namespace LW2
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddDbContextPool<IndustrialDbContext>(
-                options => options.UseMySql(
-                    GetConnectionString(),
-                    AppConfig.ServerVersion,
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.MaxBatchSize(AppConfig.EfBatchSize);
-                        
-                        if (AppConfig.EfRetryOnFailure > 0)
-                        {
-                            mysqlOptions.EnableRetryOnFailure(AppConfig.EfRetryOnFailure, TimeSpan.FromSeconds(5), null);
-                        }
-                    }
-            ));
+            //builder.Services.AddDbContextPool<IndustrialDbContext>(
+            //    options => options.UseMySQL(AppConstants.ConnectionString)
+            //    );
+
+            builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
-        }
-
-        private static string GetConnectionString()
-        {
-            var csb = new MySqlConnectionStringBuilder(AppConfig.ConnectionString);
-
-            if (AppConfig.EfDatabase != null)
-            {
-                csb.Database = AppConfig.EfDatabase;
-            }
-
-            return csb.ConnectionString;
         }
     }
 }
