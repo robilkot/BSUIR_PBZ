@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace LW2.Model.Entities;
 
-namespace LW2.Model.Entities
+public partial class Employee
 {
-    public class Employee
-    {
-        public int Id { get; set; }
-        [Column("personnel_number")]
-        public required string PersonnelNumber {  get; set; }
-        [Column("name")]
-        public required string Name { get; set; }
-        [Column("position")]
-        public required string Position { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string PersonnelNumber { get; set; } = null!;
+
+    public string Name { get; set; } = null!;
+
+    public string Position { get; set; } = null!;
+
+    public virtual ICollection<Failure> Failures { get; set; } = [];
+
+    public virtual ICollection<Inspection> Inspections { get; set; } = [];
 }

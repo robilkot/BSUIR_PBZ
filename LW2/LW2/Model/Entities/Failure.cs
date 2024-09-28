@@ -1,15 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace LW2.Model.Entities;
 
-namespace LW2.Model.Entities
+public partial class Failure
 {
-    public class Failure
-    {
-        public int Id { get; set; }
-        [Column("date")]
-        public DateTime Date { get; set; }
-        [Column("failure_reason")]
-        public required string FailureReason { get; set; }
-        public Employee? LastInspectingEmployee { get; set; }
-        public required Equipment Equipment { get; set; }
-    }
+    public int Id { get; set; }
+
+    public DateTime Date { get; set; }
+
+    public string? FailureReason { get; set; }
+
+    public int? LastInspectingEmployeeId { get; set; }
+
+    public int EquipmentId { get; set; }
+
+    public virtual Equipment Equipment { get; set; } = null!;
+
+    public virtual Employee? LastInspectingEmployee { get; set; }
 }

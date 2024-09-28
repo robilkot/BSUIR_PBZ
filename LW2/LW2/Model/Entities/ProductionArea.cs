@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace LW2.Model.Entities;
 
-namespace LW2.Model.Entities
+public partial class ProductionArea
 {
-    public class ProductionArea
-    {
-        public int Id { get; set; }
-        [Column("number")]
-        public int Number { get; set; }
-        [Column("name")]
-        public required string Name { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string Number { get; set; } = null!;
+
+    public string Name { get; set; } = null!;
+
+    public virtual ICollection<Equipment> Equipment { get; set; } = [];
 }

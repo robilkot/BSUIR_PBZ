@@ -1,4 +1,5 @@
-﻿using LW2.Model.Interfaces;
+﻿using LW2.Model.Entities;
+using LW2.Model.Interfaces;
 using LW2.Model.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,9 +19,7 @@ namespace LW2
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            //builder.Services.AddDbContextPool<IndustrialDbContext>(
-            //    options => options.UseMySQL(AppConstants.ConnectionString)
-            //    );
+            builder.Services.AddDbContextPool<IndustrialDbContext>(options => options.UseMySQL());
 
             builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
 
