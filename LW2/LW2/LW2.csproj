@@ -65,7 +65,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Model\Entities\" />
 	  <Folder Include="Viewmodel\" />
 	  <Folder Include="View\" />
 	</ItemGroup>
