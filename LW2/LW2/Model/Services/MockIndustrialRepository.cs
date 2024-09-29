@@ -40,6 +40,15 @@ namespace LW2.Model.Services
             new() { Id = 4, Number = "100004", Name = "Roller", Type = 5, TypeNavigation = s_equipmentTypes.First(t => t.Id == 5), ProductionArea = 7, ProductionAreaNavigation = s_areas.First(a => a.Id == 7)  },
             ];
 
+        private static readonly List<Inspection> s_inspections = [
+            new() { Id = 1, Date = DateTime.Now, EmployeeId = 1, Employee = s_employees.First(e => e.Id == 1), EquipmentId = 1, Equipment = s_equipment.First(e => e.Id == 1), Result = "Ok" },
+            new() { Id = 2, Date = DateTime.Now, EmployeeId = 1, Employee = s_employees.First(e => e.Id == 1), EquipmentId = 2, Equipment = s_equipment.First(e => e.Id == 2), Result = "Ok" },
+            new() { Id = 3, Date = DateTime.Now, EmployeeId = 2, Employee = s_employees.First(e => e.Id == 2), EquipmentId = 3, Equipment = s_equipment.First(e => e.Id == 3), Result = "Ok" },
+            new() { Id = 4, Date = DateTime.Now, EmployeeId = 2, Employee = s_employees.First(e => e.Id == 2), EquipmentId = 4, Equipment = s_equipment.First(e => e.Id == 4), Result = "Fail", FailureReason = "Idk lol" },
+            new() { Id = 5, Date = DateTime.Now, EmployeeId = 3, Employee = s_employees.First(e => e.Id == 3), EquipmentId = 1, Equipment = s_equipment.First(e => e.Id == 1), Result = "Ok" },
+            new() { Id = 6, Date = DateTime.Now, EmployeeId = 3, Employee = s_employees.First(e => e.Id == 3), EquipmentId = 2, Equipment = s_equipment.First(e => e.Id == 2), Result = "Fail", FailureReason = "IDC totally" },
+            ];
+
         #region Employees
         public Task<List<Employee>> GetEmployees()
         {
@@ -62,7 +71,7 @@ namespace LW2.Model.Services
         public Task UpdateEmployee(Employee employee)
         {
             _ = DeleteEmployee(employee.Id);
-            _ = AddEmployee(employee);
+            s_employees.Add(employee);
 
             return Task.CompletedTask;
         }
@@ -101,7 +110,7 @@ namespace LW2.Model.Services
         public Task UpdateProductionArea(ProductionArea area)
         {
             _ = DeleteProductionArea(area.Id);
-            _ = AddProductionArea(area);
+            s_areas.Add(area);
 
             return Task.CompletedTask;
         }
@@ -140,7 +149,7 @@ namespace LW2.Model.Services
         public Task UpdateEquipmentType(EquipmentType type)
         {
             _ = DeleteEquipmentType(type.Id);
-            _ = AddEquipmentType(type);
+            s_equipmentTypes.Add(type);
 
             return Task.CompletedTask;
         }
@@ -179,7 +188,7 @@ namespace LW2.Model.Services
         public Task UpdateEquipment(Equipment eq)
         {
             _ = DeleteEquipment(eq.Id);
-            _ = AddEquipment(eq);
+            s_equipment.Add(eq);
 
             return Task.CompletedTask;
         }
@@ -197,9 +206,9 @@ namespace LW2.Model.Services
         #endregion
 
         #region Inspections
-        public async Task<List<Inspection>> GetInspections()
+        public Task<List<Inspection>> GetInspections()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<Inspection>>([.. s_inspections]);
         }
         // дата формирования отчета, инвентарный номер, название, тип оборудования, результат осмотра.
         public async Task<List<Inspection>> GetInspections(int equipmentId)
@@ -210,15 +219,33 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task<int> AddInspection(Inspection inspection)
+        public Task<int> AddInspection(Inspection inspection)
         {
-            throw new NotImplementedException();
+            int id = s_inspections.Max(a => a.Id) + 1;
+
+            inspection.Id = id;
+
+            s_inspections.Add(inspection);
+
+            return Task.FromResult(id);
         }
-        public async Task UpdateInspection(Inspection inspection)
+        public Task UpdateInspection(Inspection inspection)
         {
+            _ = DeleteInspection(inspection.Id);
+            s_inspections.Add(inspection);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteInspection(int id)
+        public Task DeleteInspection(int id)
         {
+            var type = s_inspections.FirstOrDefault(a => a.Id == id);
+
+            if (type is not null)
+            {
+                s_inspections.Remove(type);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
 

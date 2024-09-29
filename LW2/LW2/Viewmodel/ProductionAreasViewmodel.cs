@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LW2.Model.Entities;
 using LW2.Model.Interfaces;
+using LW2.Model.Messaging;
 using System.Collections.ObjectModel;
 
 namespace LW2.Viewmodel
@@ -15,7 +17,7 @@ namespace LW2.Viewmodel
         }
 
         [ObservableProperty]
-        private ObservableCollection<ProductionArea> _areas = [];
+        private ObservableCollection<ProductionArea>? _areas = null;
 
         [ObservableProperty]
         private string _newAreaName = string.Empty;
@@ -27,7 +29,9 @@ namespace LW2.Viewmodel
         public async Task Delete(ProductionArea area)
         {
             await _industrialRepository.DeleteProductionArea(area.Id);
-            Areas.Remove(area);
+            Areas!.Remove(area);
+
+            WeakReferenceMessenger.Default.Send(new AreasChangedMessage());
         }
 
         [RelayCommand]
@@ -41,18 +45,22 @@ namespace LW2.Viewmodel
 
             newArea.Id = await _industrialRepository.AddProductionArea(newArea);
             
-            Areas.Add(newArea);
+            Areas!.Add(newArea);
+
+            WeakReferenceMessenger.Default.Send(new AreasChangedMessage());
         }
 
         [RelayCommand]
         public async Task Update(ProductionArea area)
         {
             await _industrialRepository.UpdateProductionArea(area);
+
+            WeakReferenceMessenger.Default.Send(new AreasChangedMessage());
         }
 
         public override async Task OnAppearing()
         {
-            Areas = [.. await _industrialRepository.GetProductionAreas()];
+            Areas ??= [.. await _industrialRepository.GetProductionAreas()];
         }
     }
 }

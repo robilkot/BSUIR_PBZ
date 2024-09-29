@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using LW2.Model.Entities;
 using LW2.Model.Interfaces;
+using LW2.Model.Messaging;
 using System.Collections.ObjectModel;
 
 namespace LW2.Viewmodel
@@ -15,7 +17,7 @@ namespace LW2.Viewmodel
         }
 
         [ObservableProperty]
-        private ObservableCollection<Employee> _employees = [];
+        private ObservableCollection<Employee>? _employees = null;
 
         [ObservableProperty]
         private string _newEmployeeName = string.Empty;
@@ -30,7 +32,9 @@ namespace LW2.Viewmodel
         public async Task Delete(Employee area)
         {
             await _industrialRepository.DeleteProductionArea(area.Id);
-            Employees.Remove(area);
+            Employees!.Remove(area);
+
+            WeakReferenceMessenger.Default.Send(new EmployeesChangedMessage());
         }
 
         [RelayCommand]
@@ -45,18 +49,22 @@ namespace LW2.Viewmodel
 
             newArea.Id = await _industrialRepository.AddEmployee(newArea);
 
-            Employees.Add(newArea);
+            Employees!.Add(newArea);
+
+            WeakReferenceMessenger.Default.Send(new EmployeesChangedMessage());
         }
 
         [RelayCommand]
         public async Task Update(Employee area)
         {
             await _industrialRepository.UpdateEmployee(area);
+
+            WeakReferenceMessenger.Default.Send(new EmployeesChangedMessage());
         }
 
         public override async Task OnAppearing()
         {
-            Employees = [.. await _industrialRepository.GetEmployees()];
+            Employees ??= [.. await _industrialRepository.GetEmployees()];
         }
     }
 }

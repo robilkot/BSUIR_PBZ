@@ -128,7 +128,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Model\Messaging\" />
 	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 

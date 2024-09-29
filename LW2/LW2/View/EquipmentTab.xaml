@@ -43,19 +43,52 @@
                     <Entry
                         Grid.Column="0"
                         Style="{StaticResource EntryBodyPrimaryStyle}"
-                        Placeholder="New type name"
-                        Text="{Binding NewTypeName}"/>
+                        Placeholder="New equipment name"
+                        Text="{Binding NewEquName}"/>
 
+                    <Entry
+                        Grid.Column="1"
+                        Style="{StaticResource EntryBodyPrimaryStyle}"
+                        Placeholder="New number"
+                        Text="{Binding NewEquNumber}"/>
+
+                    <Picker
+                        x:Name="newTypePicker"
+                        Grid.Column="2"
+                        SelectedItem="{Binding NewEquType}"
+                        ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Types}">
+                        <Picker.ItemDisplayBinding>
+                            <Binding
+                                x:DataType="ents:EquipmentType"
+                                Path="Name"
+                                FallbackValue="Not specified"/>
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+
+                    <Picker
+                        x:Name="newAreaPicker"
+                        Grid.Column="3"
+                        SelectedItem="{Binding NewEquArea}"
+                        ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Areas}">
+                        <Picker.ItemDisplayBinding>
+                            <Binding
+                                x:DataType="ents:ProductionArea"
+                                Path="Name"
+                                FallbackValue="Not specified"/>
+                        </Picker.ItemDisplayBinding>
+                    </Picker>
+
+                    <!--todo shit-->
                     <Button
                         IsEnabled="false"
-                        Grid.Column="2"
+                        Grid.Column="5"
                         Grid.ColumnSpan="2"
                         Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=AddCommand}"
                         Text="Create type">
                         <Button.Triggers>
                             <DataTrigger
                                 TargetType="Button"
-                                Binding="{Binding NewTypeName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" 
+                                Binding="{Binding NewEquName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" 
                                 Value="true">
                                 <Setter
                                     Property="IsEnabled" 
@@ -143,7 +176,8 @@
                             <Picker.ItemDisplayBinding>
                                 <Binding
                                     x:DataType="ents:EquipmentType"
-                                    Path="Name"/>
+                                    Path="Name"
+                                    FallbackValue="Not specified"/>
                             </Picker.ItemDisplayBinding>
                         </Picker>
 
@@ -163,7 +197,8 @@
                             <Picker.ItemDisplayBinding>
                                 <Binding
                                     x:DataType="ents:ProductionArea"
-                                    Path="Name"/>
+                                    Path="Name"
+                                    FallbackValue="Not specified"/>
                             </Picker.ItemDisplayBinding>
                         </Picker>
 
