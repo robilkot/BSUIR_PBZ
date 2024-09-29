@@ -7,9 +7,15 @@
     Shell.FlyoutBehavior="Disabled"
     Title="LW2">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate view:ProductionAreasTab}"
-        Route="MainPage" />
+    <TabBar>
+        <ShellContent
+            Title="Production areas"
+            ContentTemplate="{DataTemplate view:ProductionAreasTab}"
+            Route="ProductionAreasTab" />
+        <ShellContent
+            Title="Equipment types"
+            ContentTemplate="{DataTemplate view:EquipmentTypesTab}"
+            Route="EquipmentTypesTab" />
+    </TabBar>
 
 </Shell>

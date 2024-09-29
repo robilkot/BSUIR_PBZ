@@ -5,10 +5,23 @@ namespace LW2.Model.Services
 {
     public class MockIndustrialRepository : IIndustrialRepository
     {
-        private static List<ProductionArea> s_areas = [
+        private static readonly List<ProductionArea> s_areas = [
             new() {Name = "Area 1", Number = "A-001", Id = 1 },
             new() {Name = "Area 2", Number = "A-002", Id = 2 },
-            new() {Name = "Area 51", Number = "A-051", Id = 3 }
+            new() {Name = "Area 3", Number = "A-003", Id = 3 },
+            new() {Name = "Area 4", Number = "A-004", Id = 4 },
+            new() {Name = "Area 5", Number = "A-005", Id = 5 },
+            new() {Name = "Area 6", Number = "A-006", Id = 6 },
+            new() {Name = "Area 51", Number = "A-051", Id = 7 }
+            ];
+
+        private static readonly List<EquipmentType> s_equipmentTypes = [
+            new() {Name = "Gas", Id = 1 },
+            new() {Name = "Water", Id = 2 },
+            new() {Name = "Fire", Id = 3 },
+            new() {Name = "Pressure", Id = 4 },
+            new() {Name = "GasWaterPressure", Id = 5 },
+            new() {Name = "WaterFire", Id = 6 },
             ];
 
         #region Employees
@@ -72,23 +85,41 @@ namespace LW2.Model.Services
         #endregion
 
         #region Equipment types
-        public async Task<List<EquipmentType>> GetEquipmentTypes()
+        public Task<List<EquipmentType>> GetEquipmentTypes()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<EquipmentType>>([.. s_equipmentTypes]);
         }
         public async Task<EquipmentType> GetEquipmentType(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task<int> AddEquipmentType(EquipmentType type)
+        public Task<int> AddEquipmentType(EquipmentType type)
         {
-            throw new NotImplementedException();
+            int id = s_equipmentTypes.Max(a => a.Id) + 1;
+
+            type.Id = id;
+
+            s_equipmentTypes.Add(type);
+
+            return Task.FromResult(id);
         }
-        public async Task UpdateEquipmentType(EquipmentType type)
+        public Task UpdateEquipmentType(EquipmentType type)
         {
+            _ = DeleteEquipmentType(type.Id);
+            _ = AddEquipmentType(type);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteEquipmentType(int id)
+        public Task DeleteEquipmentType(int id)
         {
+            var type = s_equipmentTypes.FirstOrDefault(a => a.Id == id);
+
+            if (type is not null)
+            {
+                s_equipmentTypes.Remove(type);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
 

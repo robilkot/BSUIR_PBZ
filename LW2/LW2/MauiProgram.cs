@@ -26,8 +26,12 @@ namespace LW2
             builder.Services.AddDbContextPool<IndustrialDbContext>(options => options.UseMySQL());
 
             builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
+
             builder.Services.AddTransient<ProductionAreasTab>();
             builder.Services.AddTransient<ProductionAreasViewmodel>();
+
+            builder.Services.AddTransient<EquipmentTypesTab>();
+            builder.Services.AddTransient<EquipmentTypesViewmodel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

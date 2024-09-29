@@ -91,6 +91,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\EquipmentTypesTab.xaml.cs">
+	    <SubType>Code</SubType>
+	    <DependentUpon>EquipmentTypesTab.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\ProductionAreasTab.xaml.cs">
 	    <DependentUpon>ProductionAreasTab.xaml</DependentUpon>
 	  </Compile>
@@ -101,6 +105,10 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Resources\Styles\Styles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\EquipmentTypesTab.xaml">
+	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\ProductionAreasTab.xaml">
