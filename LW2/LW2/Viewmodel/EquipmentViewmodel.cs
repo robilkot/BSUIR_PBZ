@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace LW2.Viewmodel
 {
+    // todo recepient for types and areas changed event
     public partial class EquipmentViewmodel : BaseViewmodel
     {
         private readonly IIndustrialRepository _industrialRepository;
@@ -20,11 +21,17 @@ namespace LW2.Viewmodel
         [ObservableProperty]
         private string _newTypeName = string.Empty;
 
+        [ObservableProperty]
+        private List<EquipmentType> _types = [];
+
+        [ObservableProperty]
+        private List<ProductionArea> _areas = [];
+
         [RelayCommand]
-        public async Task Delete(Equipment area)
+        public async Task Delete(Equipment eq)
         {
-            await _industrialRepository.DeleteEquipmentType(area.Id);
-            Equipment.Remove(area);
+            await _industrialRepository.DeleteEquipment(eq.Id);
+            Equipment.Remove(eq);
         }
 
         [RelayCommand]
@@ -42,14 +49,27 @@ namespace LW2.Viewmodel
         }
 
         [RelayCommand]
-        public async Task Update(Equipment area)
+        public async Task Update(Equipment eq)
         {
-            await _industrialRepository.UpdateEquipment(area);
+            await _industrialRepository.UpdateEquipment(eq);
         }
 
         public override async Task OnAppearing()
         {
-            Equipment = [.. await _industrialRepository.GetEquipment()];
+            var equ = Task.Run(async () =>
+            {
+                Equipment = [.. await _industrialRepository.GetEquipment()];
+            });
+            var types = Task.Run(async () =>
+            {
+                Types = [.. await _industrialRepository.GetEquipmentTypes()];
+            });
+            var areas = Task.Run(async () =>
+            {
+                Areas = [.. await _industrialRepository.GetProductionAreas()];
+            });
+
+            await Task.WhenAll(equ, types, areas);
         }
     }
 }

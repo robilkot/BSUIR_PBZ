@@ -14,7 +14,10 @@
             <ResourceDictionary>
                 <ColumnDefinitionCollection
                     x:Key="columns">
-                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
@@ -32,9 +35,11 @@
             <Grid
                 RowDefinitions="auto,auto"
                 RowSpacing="35">
+                <!--todo-->
                 <Grid
                     Padding="{StaticResource BasePadding}"
                     ColumnDefinitions="{StaticResource columns}">
+                    
                     <Entry
                         Grid.Column="0"
                         Style="{StaticResource EntryBodyPrimaryStyle}"
@@ -45,7 +50,7 @@
                         IsEnabled="false"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
-                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=AddCommand}"
+                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=AddCommand}"
                         Text="Create type">
                         <Button.Triggers>
                             <DataTrigger
@@ -68,6 +73,21 @@
                         Margin="17,0,0,3"
                         Text="Name"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
+                    <Label
+                        Grid.Column="1"
+                        Margin="17,0,0,3"
+                        Text="Number"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
+                    <Label
+                        Grid.Column="2"
+                        Margin="17,0,0,3"
+                        Text="Type"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
+                    <Label
+                        Grid.Column="3"
+                        Margin="17,0,0,3"
+                        Text="Area"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
                 </Grid>
             </Grid>
         </CollectionView.Header>
@@ -79,6 +99,7 @@
                     <Grid
                         HeightRequest="35"
                         ColumnDefinitions="{StaticResource columns}">
+                        <!--name-->
                         <Label
                             x:Name="nameLabel"
                             Grid.Column="0"
@@ -92,6 +113,7 @@
                             Style="{StaticResource EntryBodyPrimaryStyle}"
                             Text="{Binding Name}"/>
 
+                        <!--number--> 
                         <Label
                             x:Name="numberLabel"
                             Grid.Column="1"
@@ -104,28 +126,66 @@
                             Grid.Column="1"
                             Style="{StaticResource EntryBodyPrimaryStyle}"
                             Text="{Binding Number}"/>
-                        
-                        <!-- todo area, type -->
+
+                        <!--type-->
+                        <Label
+                            x:Name="typeLabel"
+                            Grid.Column="2"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Text="{Binding TypeNavigation.Name}"/>
+                        <Picker
+                            x:Name="typePicker"
+                            IsVisible="False"
+                            x:DataType="vm:EquipmentViewmodel"
+                            Grid.Column="2"
+                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Types}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding
+                                    x:DataType="ents:EquipmentType"
+                                    Path="Name"/>
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
+
+                        <!--area-->
+                        <Label
+                            x:Name="areaLabel"
+                            Grid.Column="3"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Text="{Binding ProductionAreaNavigation.Name}"/>
+                        <Picker
+                            x:Name="areaPicker"
+                            IsVisible="False"
+                            x:DataType="vm:EquipmentViewmodel"
+                            Grid.Column="3"
+                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Areas}">
+                            <Picker.ItemDisplayBinding>
+                                <Binding
+                                    x:DataType="ents:ProductionArea"
+                                    Path="Name"/>
+                            </Picker.ItemDisplayBinding>
+                        </Picker>
 
                         <Button
                             x:Name="editButton"
-                            Grid.Column="2"
+                            Grid.Column="5"
                             Pressed="editButton_Pressed"
                             Text="Edit"/>
                         <Button
                             x:Name="saveButton"
                             IsVisible="False"
-                            Grid.Column="2"
+                            Grid.Column="5"
                             x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
                             Pressed="saveButton_Pressed"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=UpdateCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=UpdateCommand}"
                             CommandParameter="{Binding .}"
                             Text="Save"/>
 
                         <Button
-                            Grid.Column="3"
+                            Grid.Column="6"
                             x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=DeleteCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=DeleteCommand}"
                             CommandParameter="{Binding .}"
                             Text="Delete"/>
                     </Grid>

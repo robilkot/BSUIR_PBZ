@@ -33,12 +33,11 @@ namespace LW2.Model.Services
             new() {Id = 6, Name = "Walter", PersonnelNumber = "E-006", Position = "Cook" },
             ];
 
-        // todo no complex type properties
         private static readonly List<Equipment> s_equipment = [
-            new() { Id = 1, Number = "100001", Name = "Stove" },
-            new() { Id = 2, Number = "100002", Name = "Oven" },
-            new() { Id = 3, Number = "100003", Name = "Press" },
-            new() { Id = 4, Number = "100004", Name = "Roller" },
+            new() { Id = 1, Number = "100001", Name = "Stove", Type = 3, TypeNavigation = s_equipmentTypes.First(t => t.Id == 3), ProductionArea = 1, ProductionAreaNavigation = s_areas.First(a => a.Id == 1) },
+            new() { Id = 2, Number = "100002", Name = "Oven", Type = 3, TypeNavigation = s_equipmentTypes.First(t => t.Id == 3), ProductionArea = 2, ProductionAreaNavigation = s_areas.First(a => a.Id == 2)  },
+            new() { Id = 3, Number = "100003", Name = "Press", Type = 4, TypeNavigation = s_equipmentTypes.First(t => t.Id == 4), ProductionArea = 2, ProductionAreaNavigation = s_areas.First(a => a.Id == 2)  },
+            new() { Id = 4, Number = "100004", Name = "Roller", Type = 5, TypeNavigation = s_equipmentTypes.First(t => t.Id == 5), ProductionArea = 7, ProductionAreaNavigation = s_areas.First(a => a.Id == 7)  },
             ];
 
         #region Employees

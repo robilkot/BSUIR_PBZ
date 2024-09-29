@@ -1,10 +1,17 @@
 ﻿using LW2.Model.Entities;
 using LW2.Model.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LW2.Model.Services
 {
     public class IndustrialRepository : IIndustrialRepository
     {
+        private readonly IndustrialDbContext _dbContext;
+        public IndustrialRepository(IndustrialDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         #region Employees
         public async Task<List<Employee>> GetEmployees()
         {
@@ -29,7 +36,9 @@ namespace LW2.Model.Services
         #region Production Areas
         public async Task<List<ProductionArea>> GetProductionAreas()
         {
-            throw new NotImplementedException();
+            var areas = _dbContext.Productionareas;
+
+            return await areas.ToListAsync();
         }
         public async Task<ProductionArea> GetProductionArea(int id)
         {
@@ -50,7 +59,9 @@ namespace LW2.Model.Services
         #region Equipment types
         public async Task<List<EquipmentType>> GetEquipmentTypes()
         {
-            throw new NotImplementedException();
+            var types = _dbContext.Equipmenttypes;
+
+            return await types.ToListAsync();
         }
         public async Task<EquipmentType> GetEquipmentType(int id)
         {
@@ -71,7 +82,9 @@ namespace LW2.Model.Services
         #region Equipment
         public async Task<List<Equipment>> GetEquipment()
         {
-            throw new NotImplementedException();
+            var equipment = _dbContext.Equipment.Include(e => e.TypeNavigation);
+
+            return await equipment.ToListAsync();
         }
         public async Task<Equipment> GetEquipment(int id)
         {
@@ -92,7 +105,9 @@ namespace LW2.Model.Services
         #region Inspections
         public async Task<List<Inspection>> GetInspections()
         {
-            throw new NotImplementedException();
+            var inspections = _dbContext.Inspections;
+
+            return await inspections.ToListAsync();
         }
         public async Task<Inspection> GetInspection(int id)
         {
@@ -113,7 +128,9 @@ namespace LW2.Model.Services
         #region Failures
         public async Task<List<Failure>> GetFailures()
         {
-            throw new NotImplementedException();
+            var failures = _dbContext.Failures;
+
+            return await failures.ToListAsync();
         }
         public async Task<Failure> GetFailure(int id)
         {
@@ -129,13 +146,21 @@ namespace LW2.Model.Services
         public async Task DeleteFailure(int id)
         {
         }
+        #endregion
 
-        public Task<List<Failure>> GetFailures(ProductionArea area)
+        #region Special queries
+        // todo
+        public async Task<List<Failure>> GetFailures(ProductionArea area)
         {
-            throw new NotImplementedException();
+            var failures = _dbContext.Failures
+                .Include(f => f.Equipment)
+                .ThenInclude(e => e.TypeNavigation);
+
+            return await failures.ToListAsync();
         }
 
-        public Task<List<Inspection>> GetInspections(int equipmentId)
+        // todo
+        public async Task<List<Inspection>> GetInspections(int equipmentId)
         {
             throw new NotImplementedException();
         }
