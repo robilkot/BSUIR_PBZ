@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:LW2.Viewmodel"
              xmlns:ents="clr-namespace:LW2.Model.Entities"
-             x:DataType="vm:ProductionAreasViewmodel"
-             x:Class="LW2.View.ProductionAreasTab"
-             Title="Production areas">
+             x:DataType="vm:EmployeesViewmodel"
+             x:Class="LW2.View.EmployeesTab"
+             Title="Employees">
     <CollectionView
         Margin="20"
-        ItemsSource="{Binding Areas}"
+        ItemsSource="{Binding Employees}"
         Shadow="{StaticResource BaseShadow}">
         <CollectionView.Resources>
             <ResourceDictionary>
@@ -16,6 +16,7 @@
                     x:Key="columns">
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
@@ -39,33 +40,39 @@
                     <Entry
                         Grid.Column="0"
                         Style="{StaticResource EntryBodyPrimaryStyle}"
-                        Placeholder="New area name"
-                        Text="{Binding NewAreaName}"/>
+                        Placeholder="New employee name"
+                        Text="{Binding NewEmployeeName}"/>
                     <Entry
                          Grid.Column="1"
                          Style="{StaticResource EntryBodyPrimaryStyle}"
                          Placeholder="Number"
-                         Text="{Binding NewAreaNumber}"/>
+                         Text="{Binding NewEmployeePersonellNumber}"/>
+                    <Entry
+                         Grid.Column="2"
+                         Style="{StaticResource EntryBodyPrimaryStyle}"
+                         Placeholder="Position"
+                         Text="{Binding NewEmployeePosition}"/>
 
                     <Button
                         IsEnabled="false"
-                        Grid.Column="3"
+                        Grid.Column="4"
                         Grid.ColumnSpan="2"
-                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=AddCommand}"
-                        Text="Create area">
+                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EmployeesViewmodel}}, Path=AddCommand}"
+                        Text="Create employee">
                         <!--todo shit-->
                         <Button.Triggers>
                             <MultiTrigger TargetType="Button">
                                 <MultiTrigger.Conditions>
-                                    <BindingCondition Binding="{Binding NewAreaName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
-                                    <BindingCondition Binding="{Binding NewAreaNumber, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
+                                    <BindingCondition Binding="{Binding NewEmployeeName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
+                                    <BindingCondition Binding="{Binding NewEmployeePersonellNumber, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
+                                    <BindingCondition Binding="{Binding NewEmployeePosition, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
                                 </MultiTrigger.Conditions>
                                 <Setter Property="IsEnabled" Value="true" />
                             </MultiTrigger>
                         </Button.Triggers>
                     </Button>
                 </Grid>
-                
+
                 <Grid
                     Grid.Row="1"
                     ColumnDefinitions="{StaticResource columns}">
@@ -74,18 +81,13 @@
                         Margin="17,0,0,3"
                         Text="Name"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
-                    <Label
-                        Grid.Column="1"
-                        Margin="17,0,0,3"
-                        Text="Number"
-                        Style="{StaticResource LabelBodySecondaryStyle}"/>
                 </Grid>
             </Grid>
         </CollectionView.Header>
         
         <CollectionView.ItemTemplate>
             <DataTemplate
-                x:DataType="{x:Type ents:ProductionArea}">
+                x:DataType="{x:Type ents:Employee}">
                 <Border>
                     <Grid
                         HeightRequest="35"
@@ -105,36 +107,50 @@
 
                         <Label
                             x:Name="numberLabel"
+                            Grid.Column="1"
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
-                            Grid.Column="1"
-                            Text="{Binding Number}"/>
+                            Text="{Binding PersonnelNumber}"/>
                         <Entry
                             x:Name="numberEntry"
                             IsVisible="False"
                             Grid.Column="1"
                             Style="{StaticResource EntryBodyPrimaryStyle}"
-                            Text="{Binding Number}"/>
+                            Text="{Binding PersonnelNumber}"/>
+
+                        <Label
+                            x:Name="positionLabel"
+                            Grid.Column="2"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Text="{Binding Position}"/>
+                        <Entry
+                            x:Name="positionEntry"
+                            IsVisible="False"
+                            Grid.Column="2"
+                            Style="{StaticResource EntryBodyPrimaryStyle}"
+                            Text="{Binding Position}"/>
 
                         <Button
                             x:Name="editButton"
-                            Grid.Column="3"
+                            Grid.Column="4"
+                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
                             Pressed="editButton_Pressed"
                             Text="Edit"/>
                         <Button
                             x:Name="saveButton"
                             IsVisible="False"
-                            Grid.Column="3"
+                            Grid.Column="4"
                             x:DataType="{x:Type vm:ProductionAreasViewmodel}"
                             Pressed="saveButton_Pressed"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=UpdateCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EmployeesViewmodel}}, Path=UpdateCommand}"
                             CommandParameter="{Binding .}"
                             Text="Save"/>
 
                         <Button
-                            Grid.Column="4"
+                            Grid.Column="5"
                             x:DataType="{x:Type vm:ProductionAreasViewmodel}"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=DeleteCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EmployeesViewmodel}}, Path=DeleteCommand}"
                             CommandParameter="{Binding .}"
                             Text="Delete"/>
                     </Grid>

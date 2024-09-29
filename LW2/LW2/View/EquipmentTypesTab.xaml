@@ -45,7 +45,7 @@
                         IsEnabled="false"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
-                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=AddCommand}"
+                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=AddCommand}"
                         Text="Create type">
                         <Button.Triggers>
                             <DataTrigger
@@ -95,23 +95,22 @@
                         <Button
                             x:Name="editButton"
                             Grid.Column="2"
-                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
                             Pressed="editButton_Pressed"
                             Text="Edit"/>
                         <Button
                             x:Name="saveButton"
                             IsVisible="False"
                             Grid.Column="2"
-                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
+                            x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
                             Pressed="saveButton_Pressed"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=UpdateCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=UpdateCommand}"
                             CommandParameter="{Binding .}"
                             Text="Save"/>
 
                         <Button
                             Grid.Column="3"
-                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=DeleteCommand}"
+                            x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentTypesViewmodel}}, Path=DeleteCommand}"
                             CommandParameter="{Binding .}"
                             Text="Delete"/>
                     </Grid>

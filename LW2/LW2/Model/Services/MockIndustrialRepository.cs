@@ -24,24 +24,51 @@ namespace LW2.Model.Services
             new() {Name = "WaterFire", Id = 6 },
             ];
 
+        private static readonly List<Employee> s_employees = [
+            new() {Id = 1, Name = "Tim", PersonnelNumber = "E-001", Position = "Sr. Engineer" },
+            new() {Id = 2, Name = "Alexiy", PersonnelNumber = "E-002", Position = "Engineer" },
+            new() {Id = 3, Name = "Mihail Sadovskiy", PersonnelNumber = "E-003", Position = "Sr. Lecturer" },
+            new() {Id = 4, Name = "Shaver", PersonnelNumber = "E-004", Position = "Engineer" },
+            new() {Id = 5, Name = "Gus", PersonnelNumber = "E-005", Position = "Lawyer" },
+            new() {Id = 6, Name = "Walter", PersonnelNumber = "E-006", Position = "Cook" },
+            ];
+
         #region Employees
-        public async Task<List<Employee>> GetEmployees()
+        public Task<List<Employee>> GetEmployees()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<Employee>>([.. s_employees]);
         }
         public async Task<Employee> GetEmployee(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task<int> AddEmployee(Employee employee)
+        public Task<int> AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            int id = s_employees.Max(a => a.Id) + 1;
+
+            employee.Id = id;
+
+            s_employees.Add(employee);
+
+            return Task.FromResult(id);
         }
-        public async Task UpdateEmployee(Employee employee)
+        public Task UpdateEmployee(Employee employee)
         {
+            _ = DeleteEmployee(employee.Id);
+            _ = AddEmployee(employee);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteEmployee(int id)
+        public Task DeleteEmployee(int id)
         {
+            var area = s_employees.FirstOrDefault(a => a.Id == id);
+
+            if (area is not null)
+            {
+                s_employees.Remove(area);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
 
@@ -57,7 +84,7 @@ namespace LW2.Model.Services
         public Task<int> AddProductionArea(ProductionArea area)
         {
             int id = s_areas.Max(a => a.Id) + 1;
-            
+
             area.Id = id;
 
             s_areas.Add(area);
@@ -75,7 +102,7 @@ namespace LW2.Model.Services
         {
             var area = s_areas.FirstOrDefault(a => a.Id == id);
 
-            if(area is not null)
+            if (area is not null)
             {
                 s_areas.Remove(area);
             }

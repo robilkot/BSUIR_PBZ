@@ -16,6 +16,10 @@
             Title="Equipment types"
             ContentTemplate="{DataTemplate view:EquipmentTypesTab}"
             Route="EquipmentTypesTab" />
+        <ShellContent
+            Title="Employees"
+            ContentTemplate="{DataTemplate view:EmployeesTab}"
+            Route="EmployeesTab" />
     </TabBar>
 
 </Shell>
