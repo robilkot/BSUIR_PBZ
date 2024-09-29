@@ -20,6 +20,10 @@
             Title="Employees"
             ContentTemplate="{DataTemplate view:EmployeesTab}"
             Route="EmployeesTab" />
+        <ShellContent
+            Title="Equipment"
+            ContentTemplate="{DataTemplate view:EquipmentTab}"
+            Route="EquipmentTab" />
     </TabBar>
 
 </Shell>

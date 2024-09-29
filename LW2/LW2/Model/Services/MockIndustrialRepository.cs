@@ -33,6 +33,14 @@ namespace LW2.Model.Services
             new() {Id = 6, Name = "Walter", PersonnelNumber = "E-006", Position = "Cook" },
             ];
 
+        // todo no complex type properties
+        private static readonly List<Equipment> s_equipment = [
+            new() { Id = 1, Number = "100001", Name = "Stove" },
+            new() { Id = 2, Number = "100002", Name = "Oven" },
+            new() { Id = 3, Number = "100003", Name = "Press" },
+            new() { Id = 4, Number = "100004", Name = "Roller" },
+            ];
+
         #region Employees
         public Task<List<Employee>> GetEmployees()
         {
@@ -151,23 +159,41 @@ namespace LW2.Model.Services
         #endregion
 
         #region Equipment
-        public async Task<List<Equipment>> GetEquipment()
+        public Task<List<Equipment>> GetEquipment()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<Equipment>>([.. s_equipment]);
         }
         public async Task<Equipment> GetEquipment(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task<int> AddEquipment(Equipment eq)
+        public Task<int> AddEquipment(Equipment eq)
         {
-            throw new NotImplementedException();
+            int id = s_equipment.Max(a => a.Id) + 1;
+
+            eq.Id = id;
+
+            s_equipment.Add(eq);
+
+            return Task.FromResult(id);
         }
-        public async Task UpdateEquipment(Equipment eq)
+        public Task UpdateEquipment(Equipment eq)
         {
+            _ = DeleteEquipment(eq.Id);
+            _ = AddEquipment(eq);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteEquipment(int id)
+        public Task DeleteEquipment(int id)
         {
+            var type = s_equipment.FirstOrDefault(a => a.Id == id);
+
+            if (type is not null)
+            {
+                s_equipment.Remove(type);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
 

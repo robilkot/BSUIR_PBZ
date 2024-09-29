@@ -47,7 +47,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -94,6 +93,9 @@
 	  <Compile Update="View\EmployeesTab.xaml.cs">
 	    <DependentUpon>EmployeesTab.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\EquipmentTab.xaml.cs">
+	    <DependentUpon>EquipmentTab.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\EquipmentTypesTab.xaml.cs">
 	    <SubType>Code</SubType>
 	    <DependentUpon>EquipmentTypesTab.xaml</DependentUpon>
@@ -113,6 +115,9 @@
 	  <MauiXaml Update="View\EmployeesTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\EquipmentTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\EquipmentTypesTab.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
@@ -120,6 +125,10 @@
 	  <MauiXaml Update="View\ProductionAreasTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>
