@@ -4,12 +4,12 @@ namespace LW2.Model.Interfaces
 {
     public interface IIndustrialRepository
     {
-        Task AddEmployee(Employee employee);
-        Task AddEquipment(Equipment eq);
-        Task AddEquipmentType(EquipmentType type);
-        Task AddFailure(Failure inspection);
-        Task AddInspection(Inspection inspection);
-        Task AddProductionArea(ProductionArea area);
+        Task<int> AddEmployee(Employee employee);
+        Task<int> AddEquipment(Equipment eq);
+        Task<int> AddEquipmentType(EquipmentType type);
+        Task<int> AddFailure(Failure inspection);
+        Task<int> AddInspection(Inspection inspection);
+        Task<int> AddProductionArea(ProductionArea area);
         Task DeleteEmployee(int id);
         Task DeleteEquipment(int id);
         Task DeleteEquipmentType(int id);

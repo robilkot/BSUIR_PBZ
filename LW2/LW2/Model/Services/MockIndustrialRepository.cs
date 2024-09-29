@@ -20,8 +20,9 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task AddEmployee(Employee employee)
+        public async Task<int> AddEmployee(Employee employee)
         {
+            throw new NotImplementedException();
         }
         public async Task UpdateEmployee(Employee employee)
         {
@@ -40,7 +41,7 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public Task AddProductionArea(ProductionArea area)
+        public Task<int> AddProductionArea(ProductionArea area)
         {
             int id = s_areas.Max(a => a.Id) + 1;
             
@@ -48,7 +49,7 @@ namespace LW2.Model.Services
 
             s_areas.Add(area);
 
-            return Task.CompletedTask;
+            return Task.FromResult(id);
         }
         public Task UpdateProductionArea(ProductionArea area)
         {
@@ -79,8 +80,9 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task AddEquipmentType(EquipmentType type)
+        public async Task<int> AddEquipmentType(EquipmentType type)
         {
+            throw new NotImplementedException();
         }
         public async Task UpdateEquipmentType(EquipmentType type)
         {
@@ -99,8 +101,9 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task AddEquipment(Equipment eq)
+        public async Task<int> AddEquipment(Equipment eq)
         {
+            throw new NotImplementedException();
         }
         public async Task UpdateEquipment(Equipment eq)
         {
@@ -124,8 +127,9 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task AddInspection(Inspection inspection)
+        public async Task<int> AddInspection(Inspection inspection)
         {
+            throw new NotImplementedException();
         }
         public async Task UpdateInspection(Inspection inspection)
         {
@@ -149,8 +153,9 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task AddFailure(Failure inspection)
+        public async Task<int> AddFailure(Failure inspection)
         {
+            throw new NotImplementedException();
         }
         public async Task UpdateFailure(Failure inspection)
         {

@@ -39,9 +39,9 @@ namespace LW2.Viewmodel
                 Number = NewAreaNumber,
             };
 
-            await _industrialRepository.AddProductionArea(newArea);
+            newArea.Id = await _industrialRepository.AddProductionArea(newArea);
             
-            await OnAppearing();
+            Areas.Add(newArea);
         }
 
         [RelayCommand]
