@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LW2.Viewmodel"
+             xmlns:ents="clr-namespace:LW2.Model.Entities"
+             x:DataType="vm:ProductionAreasViewmodel"
+             x:Class="LW2.View.ProductionAreasTab"
+             Title="Production areas"
+             x:Name="rootview">
+    <CollectionView
+        Margin="20"
+        ItemsSource="{Binding Areas}"
+        Shadow="{StaticResource BaseShadow}">
+        <CollectionView.Resources>
+            <ResourceDictionary>
+                <ColumnDefinitionCollection
+                    x:Key="columns">
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                </ColumnDefinitionCollection>
+            </ResourceDictionary>
+        </CollectionView.Resources>
+        
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout
+                Orientation="Vertical"
+                ItemSpacing="{StaticResource CompactedSpacing}"/>
+        </CollectionView.ItemsLayout>
+        
+        <CollectionView.Header>
+            <Grid
+                RowDefinitions="auto,auto"
+                RowSpacing="35">
+                <Grid
+                    Padding="{StaticResource BasePadding}"
+                    ColumnDefinitions="{StaticResource columns}">
+                    <Entry
+                        Grid.Column="0"
+                        Style="{StaticResource EntryBodyPrimaryStyle}"
+                        Placeholder="New area name"
+                        Text="{Binding NewAreaName}"/>
+                    <Entry
+                         Grid.Column="1"
+                         Style="{StaticResource EntryBodyPrimaryStyle}"
+                         Placeholder="Number"
+                         Text="{Binding NewAreaNumber}"/>
+
+                    <Button
+                        IsEnabled="false"
+                        Grid.Column="3"
+                        Grid.ColumnSpan="2"
+                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=AddCommand}"
+                        Text="Create area">
+                        <!--todo shit-->
+                        <Button.Triggers>
+                            <MultiTrigger TargetType="Button">
+                                <MultiTrigger.Conditions>
+                                    <BindingCondition Binding="{Binding NewAreaName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
+                                    <BindingCondition Binding="{Binding NewAreaNumber, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Value="true" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="true" />
+                            </MultiTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+                
+                <Grid
+                    Grid.Row="1"
+                    ColumnDefinitions="{StaticResource columns}">
+                    <Label
+                        Grid.Column="0"
+                        Margin="17,0,0,3"
+                        Text="Name"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
+                    <Label
+                        Grid.Column="1"
+                        Margin="17,0,0,3"
+                        Text="Number"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
+                </Grid>
+            </Grid>
+        </CollectionView.Header>
+        
+        <CollectionView.ItemTemplate>
+            <DataTemplate
+                x:DataType="{x:Type ents:ProductionArea}">
+                <Border>
+                    <Grid
+                        HeightRequest="35"
+                        ColumnDefinitions="{StaticResource columns}">
+                        <Label
+                            x:Name="nameLabel"
+                            Grid.Column="0"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Text="{Binding Name}"/>
+                        <Entry
+                            x:Name="nameEntry"
+                            IsVisible="False"
+                            Grid.Column="0"
+                            Style="{StaticResource EntryBodyPrimaryStyle}"
+                            Text="{Binding Name}"/>
+
+                        <Label
+                            x:Name="numberLabel"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Grid.Column="1"
+                            Text="{Binding Number}"/>
+                        <Entry
+                            x:Name="numberEntry"
+                            IsVisible="False"
+                            Grid.Column="1"
+                            Style="{StaticResource EntryBodyPrimaryStyle}"
+                            Text="{Binding Number}"/>
+
+                        <Button
+                            x:Name="editButton"
+                            Grid.Column="3"
+                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
+                            Pressed="editButton_Pressed"
+                            Text="Edit"/>
+                        <Button
+                            x:Name="saveButton"
+                            IsVisible="False"
+                            Grid.Column="3"
+                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
+                            Pressed="saveButton_Pressed"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=UpdateCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="Save"/>
+
+                        <Button
+                            Grid.Column="4"
+                            x:DataType="{x:Type vm:ProductionAreasViewmodel}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:ProductionAreasViewmodel}}, Path=DeleteCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="Delete"/>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

@@ -1,6 +1,9 @@
-﻿using LW2.Model.Entities;
+﻿using CommunityToolkit.Maui;
+using LW2.Model.Entities;
 using LW2.Model.Interfaces;
 using LW2.Model.Services;
+using LW2.View;
+using LW2.Viewmodel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +15,7 @@ namespace LW2
         {
             var builder = MauiApp.CreateBuilder();
             builder
+                .UseMauiCommunityToolkit()
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
@@ -22,6 +26,8 @@ namespace LW2
             builder.Services.AddDbContextPool<IndustrialDbContext>(options => options.UseMySQL());
 
             builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
+            builder.Services.AddTransient<ProductionAreasTab>();
+            builder.Services.AddTransient<ProductionAreasViewmodel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -5,6 +5,12 @@ namespace LW2.Model.Services
 {
     public class MockIndustrialRepository : IIndustrialRepository
     {
+        private static List<ProductionArea> s_areas = [
+            new() {Name = "Area 1", Number = "A-001", Id = 1 },
+            new() {Name = "Area 2", Number = "A-002", Id = 2 },
+            new() {Name = "Area 51", Number = "A-051", Id = 3 }
+            ];
+
         #region Employees
         public async Task<List<Employee>> GetEmployees()
         {
@@ -26,22 +32,41 @@ namespace LW2.Model.Services
         #endregion
 
         #region Production Areas
-        public async Task<List<ProductionArea>> GetProductionAreas()
+        public Task<List<ProductionArea>> GetProductionAreas()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<ProductionArea>>([.. s_areas]);
         }
         public async Task<ProductionArea> GetProductionArea(int id)
         {
             throw new NotImplementedException();
         }
-        public async Task AddProductionArea(ProductionArea area)
+        public Task AddProductionArea(ProductionArea area)
         {
+            int id = s_areas.Max(a => a.Id) + 1;
+            
+            area.Id = id;
+
+            s_areas.Add(area);
+
+            return Task.CompletedTask;
         }
-        public async Task UpdateProductionArea(ProductionArea area)
+        public Task UpdateProductionArea(ProductionArea area)
         {
+            _ = DeleteProductionArea(area.Id);
+            _ = AddProductionArea(area);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteProductionArea(int id)
+        public Task DeleteProductionArea(int id)
         {
+            var area = s_areas.FirstOrDefault(a => a.Id == id);
+
+            if(area is not null)
+            {
+                s_areas.Remove(area);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
 

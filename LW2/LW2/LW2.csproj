@@ -57,6 +57,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
 		  <PrivateAssets>all</PrivateAssets>
@@ -69,11 +71,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Viewmodel\" />
-	  <Folder Include="View\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Remove="C:\Users\robilkot\.nuget\packages\microsoft.windowsappsdk\1.5.240627000\buildTransitive\..\include\DeploymentManagerAutoInitializer.cs" />
 	</ItemGroup>
 
@@ -91,6 +88,24 @@
 
 	<ItemGroup>
 	  <Compile Remove="C:\Users\robilkot\.nuget\packages\microsoft.windowsappsdk\1.5.240627000\buildTransitive\..\include\WindowsAppSDK-VersionInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="View\ProductionAreasTab.xaml.cs">
+	    <DependentUpon>ProductionAreasTab.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Resources\Styles\Colors.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Styles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\ProductionAreasTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
