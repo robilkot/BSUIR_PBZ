@@ -93,6 +93,9 @@
 	  <Compile Update="View\EmployeesTab.xaml.cs">
 	    <DependentUpon>EmployeesTab.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="View\InspectionsTab.xaml.cs">
+	    <DependentUpon>InspectionsTab.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\EquipmentTab.xaml.cs">
 	    <DependentUpon>EquipmentTab.xaml</DependentUpon>
 	  </Compile>
@@ -113,6 +116,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\EmployeesTab.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\InspectionsTab.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\EquipmentTab.xaml">

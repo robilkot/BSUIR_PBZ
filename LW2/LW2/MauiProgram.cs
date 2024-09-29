@@ -39,6 +39,9 @@ namespace LW2
             builder.Services.AddTransient<EquipmentTab>();
             builder.Services.AddTransient<EquipmentViewmodel>();
 
+            builder.Services.AddTransient<InspectionsTab>();
+            builder.Services.AddTransient<InspectionsViewmodel>();
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

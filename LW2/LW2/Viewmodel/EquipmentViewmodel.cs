@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 
 namespace LW2.Viewmodel
 {
-    // todo recepient for types and areas changed event
     public partial class EquipmentViewmodel : BaseViewmodel, IRecipient<EquipmentTypesChangedMessage>, IRecipient<AreasChangedMessage>
     {
         private readonly IIndustrialRepository _industrialRepository;

@@ -3,19 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:LW2.Viewmodel"
              xmlns:ents="clr-namespace:LW2.Model.Entities"
-             x:DataType="vm:EquipmentViewmodel"
-             x:Class="LW2.View.EquipmentTab"
-             Title="Equipment">
+             x:DataType="vm:InspectionsViewmodel"
+             x:Class="LW2.View.InspectionsTab"
+             Title="Inspections">
     <CollectionView
         Margin="20"
-        ItemsSource="{Binding Equipment}"
+        ItemsSource="{Binding Inspections}"
         Shadow="{StaticResource BaseShadow}">
         <CollectionView.Resources>
             <ResourceDictionary>
                 <ColumnDefinitionCollection
                     x:Key="columns">
+                    <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="*"/>
@@ -35,59 +36,58 @@
             <Grid
                 RowDefinitions="auto,auto"
                 RowSpacing="35">
+                <!--todo-->
                 <Grid
                     Padding="{StaticResource BasePadding}"
                     ColumnDefinitions="{StaticResource columns}">
-                    
-                    <Entry
-                        Grid.Column="0"
-                        Style="{StaticResource EntryBodyPrimaryStyle}"
-                        Placeholder="New name"
-                        Text="{Binding NewEquName}"/>
 
                     <Entry
                         Grid.Column="1"
                         Style="{StaticResource EntryBodyPrimaryStyle}"
-                        Placeholder="number"
-                        Text="{Binding NewEquNumber}"/>
+                        Placeholder="New result"
+                        Text="{Binding NewResult}"/>
 
                     <Picker
-                        x:Name="newTypePicker"
                         Grid.Column="2"
-                        SelectedItem="{Binding NewEquType}"
-                        ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Types}">
+                        SelectedItem="{Binding NewEquipment}"
+                        ItemsSource="{Binding Equipment}">
                         <Picker.ItemDisplayBinding>
                             <Binding
-                                x:DataType="ents:EquipmentType"
+                                x:DataType="ents:Equipment"
                                 Path="Name"
                                 FallbackValue="Not specified"/>
                         </Picker.ItemDisplayBinding>
                     </Picker>
 
                     <Picker
-                        x:Name="newAreaPicker"
                         Grid.Column="3"
-                        SelectedItem="{Binding NewEquArea}"
-                        ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Areas}">
+                        SelectedItem="{Binding NewEmployee}"
+                        ItemsSource="{Binding Employees}">
                         <Picker.ItemDisplayBinding>
                             <Binding
-                                x:DataType="ents:ProductionArea"
+                                x:DataType="ents:Employee"
                                 Path="Name"
                                 FallbackValue="Not specified"/>
                         </Picker.ItemDisplayBinding>
                     </Picker>
+
+                    <Entry
+                        Grid.Column="4"
+                        Style="{StaticResource EntryBodyPrimaryStyle}"
+                        Placeholder="*Failure reason"
+                        Text="{Binding NewFailureReason}"/>
 
                     <!--todo shit-->
                     <Button
                         IsEnabled="false"
-                        Grid.Column="5"
+                        Grid.Column="6"
                         Grid.ColumnSpan="2"
-                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=AddCommand}"
-                        Text="Create equipment">
+                        Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=AddCommand}"
+                        Text="Create type">
                         <Button.Triggers>
                             <DataTrigger
                                 TargetType="Button"
-                                Binding="{Binding NewEquName, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" 
+                                Binding="{Binding NewResult, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" 
                                 Value="true">
                                 <Setter
                                     Property="IsEnabled" 
@@ -103,22 +103,27 @@
                     <Label
                         Grid.Column="0"
                         Margin="17,0,0,3"
-                        Text="Name"
+                        Text="Date and time"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
                     <Label
                         Grid.Column="1"
                         Margin="17,0,0,3"
-                        Text="Number"
+                        Text="Result"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
                     <Label
                         Grid.Column="2"
                         Margin="17,0,0,3"
-                        Text="Type"
+                        Text="Equipment"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
                     <Label
                         Grid.Column="3"
                         Margin="17,0,0,3"
-                        Text="Area"
+                        Text="Employee"
+                        Style="{StaticResource LabelBodySecondaryStyle}"/>
+                    <Label
+                        Grid.Column="4"
+                        Margin="17,0,0,3"
+                        Text="*Failure reason"
                         Style="{StaticResource LabelBodySecondaryStyle}"/>
                 </Grid>
             </Grid>
@@ -126,100 +131,121 @@
         
         <CollectionView.ItemTemplate>
             <DataTemplate
-                x:DataType="{x:Type ents:Equipment}">
+                x:DataType="{x:Type ents:Inspection}">
                 <Border>
                     <Grid
                         HeightRequest="35"
                         ColumnDefinitions="{StaticResource columns}">
-                        <!--name-->
+                        <!--datetime-->
                         <Label
-                            x:Name="nameLabel"
+                            x:Name="dateLabel"
                             Grid.Column="0"
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
-                            Text="{Binding Name}"/>
-                        <Entry
-                            x:Name="nameEntry"
+                            Text="{Binding Date, StringFormat='{0:dd.MM.yyyy hh:mm}'}"/>
+                        <DatePicker
+                            x:Name="datePicker"
                             IsVisible="False"
                             Grid.Column="0"
-                            Style="{StaticResource EntryBodyPrimaryStyle}"
-                            Text="{Binding Name}"/>
+                            x:DataType="{x:Type vm:InspectionsViewmodel}"
+                            MaximumDate="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=Now}">
+                            <DatePicker.Date>
+                                <Binding
+                                    x:DataType="{x:Type ents:Inspection}"
+                                    Path="Date">
+                                </Binding>
+                            </DatePicker.Date>
+                        </DatePicker>
 
-                        <!--number--> 
+                        <!--result--> 
                         <Label
-                            x:Name="numberLabel"
+                            x:Name="resultLabel"
                             Grid.Column="1"
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
-                            Text="{Binding Number}"/>
+                            Text="{Binding Result}"/>
                         <Entry
-                            x:Name="numberEntry"
+                            x:Name="resultEntry"
                             IsVisible="False"
                             Grid.Column="1"
                             Style="{StaticResource EntryBodyPrimaryStyle}"
-                            Text="{Binding Number}"/>
+                            Text="{Binding Result}"/>
 
-                        <!--type-->
+                        <!--equipment-->
                         <Label
-                            x:Name="typeLabel"
+                            x:Name="equipmentLabel"
                             Grid.Column="2"
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
-                            Text="{Binding TypeNavigation.Name}"/>
+                            Text="{Binding Equipment.Name}"/>
                         <Picker
-                            x:Name="typePicker"
+                            x:Name="equipmentPicker"
                             IsVisible="False"
-                            x:DataType="vm:EquipmentViewmodel"
+                            x:DataType="vm:InspectionsViewmodel"
                             Grid.Column="2"
-                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Types}">
+                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=Equipment}">
                             <Picker.ItemDisplayBinding>
                                 <Binding
-                                    x:DataType="ents:EquipmentType"
+                                    x:DataType="ents:Equipment"
                                     Path="Name"
                                     FallbackValue="Not specified"/>
                             </Picker.ItemDisplayBinding>
                         </Picker>
 
-                        <!--area-->
+                        <!--employee-->
                         <Label
-                            x:Name="areaLabel"
+                            x:Name="employeeLabel"
                             Grid.Column="3"
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
-                            Text="{Binding ProductionAreaNavigation.Name}"/>
+                            Text="{Binding Employee.Name}"/>
                         <Picker
-                            x:Name="areaPicker"
+                            x:Name="employeePicker"
                             IsVisible="False"
-                            x:DataType="vm:EquipmentViewmodel"
+                            x:DataType="vm:InspectionsViewmodel"
                             Grid.Column="3"
-                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=Areas}">
+                            ItemsSource="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=Employees}">
                             <Picker.ItemDisplayBinding>
                                 <Binding
-                                    x:DataType="ents:ProductionArea"
+                                    x:DataType="ents:Employee"
                                     Path="Name"
                                     FallbackValue="Not specified"/>
                             </Picker.ItemDisplayBinding>
                         </Picker>
+
+                        <!--failure reason-->
+                        <Label
+                            x:Name="failureReasonLabel"
+                            Grid.Column="4"
+                            Margin="11,0,0,3"
+                            Style="{StaticResource LabelBodyPrimaryStyle}"
+                            Text="{Binding FailureReason, FallbackValue='Not specified'}"/>
+                        <Entry
+                            x:Name="failureReasonEntry"
+                            IsVisible="False"
+                            Grid.Column="4"
+                            Style="{StaticResource EntryBodyPrimaryStyle}"
+                            Text="{Binding FailureReason}"/>
 
                         <Button
                             x:Name="editButton"
-                            Grid.Column="5"
+                            Grid.Column="6"
                             Pressed="editButton_Pressed"
                             Text="Edit"/>
                         <Button
                             x:Name="saveButton"
                             IsVisible="False"
-                            Grid.Column="5"
-                            x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
+                            Grid.Column="6"
+                            x:DataType="{x:Type vm:InspectionsViewmodel}"
                             Pressed="saveButton_Pressed"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=UpdateCommand}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=UpdateCommand}"
                             CommandParameter="{Binding .}"
                             Text="Save"/>
 
                         <Button
-                            Grid.Column="6"
-                            x:DataType="{x:Type vm:EquipmentTypesViewmodel}"
-                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:EquipmentViewmodel}}, Path=DeleteCommand}"
+                            Grid.Column="7"
+                            x:DataType="{x:Type vm:InspectionsViewmodel}"
+                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=DeleteCommand}"
                             CommandParameter="{Binding .}"
                             Text="Delete"/>
                     </Grid>
