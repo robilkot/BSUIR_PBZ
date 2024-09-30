@@ -306,16 +306,31 @@ namespace LW2.Model.Services
         #endregion
 
         #region Special queries
-        // todo
+        // todo call this somewhere
         public async Task<List<Failure>> GetFailures(ProductionArea area)
         {
-            throw new NotImplementedException();
+            using var ctx = _dbContextFactory.CreateDbContext();
+
+            return await ctx.Failures
+                .Join(ctx.Equipment,
+                f => f.EquipmentId,
+                e => e.Id,
+                (failure, e) => new { failure, e.ProductionArea })
+                .Where(t => t.ProductionArea == area.Id)
+                .Select(t => t.failure)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        // todo
+        // todo call this somewhere
         public async Task<List<Inspection>> GetInspections(int equipmentId)
         {
-            throw new NotImplementedException();
+            using var ctx = _dbContextFactory.CreateDbContext();
+
+            return await ctx.Inspections
+                .Where(i => i.EquipmentId == equipmentId)
+                .AsNoTracking()
+                .ToListAsync();
         }
         #endregion
     }

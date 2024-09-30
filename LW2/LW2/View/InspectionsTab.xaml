@@ -143,19 +143,6 @@
                             Margin="11,0,0,3"
                             Style="{StaticResource LabelBodyPrimaryStyle}"
                             Text="{Binding Date, StringFormat='{0:dd.MM.yyyy hh:mm}'}"/>
-                        <DatePicker
-                            x:Name="datePicker"
-                            IsVisible="False"
-                            Grid.Column="0"
-                            x:DataType="{x:Type vm:InspectionsViewmodel}"
-                            MaximumDate="{Binding Source={x:RelativeSource AncestorType={x:Type vm:InspectionsViewmodel}}, Path=Now}">
-                            <DatePicker.Date>
-                                <Binding
-                                    x:DataType="{x:Type ents:Inspection}"
-                                    Path="Date">
-                                </Binding>
-                            </DatePicker.Date>
-                        </DatePicker>
 
                         <!--result--> 
                         <Label

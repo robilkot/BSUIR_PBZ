@@ -11,7 +11,6 @@ namespace LW2.Viewmodel
     public partial class FailuresViewmodel : BaseViewmodel, IRecipient<EmployeesChangedMessage>, IRecipient<EquipmentChangedMessage>
     {
         private readonly IIndustrialRepository _industrialRepository;
-        public DateTime Now => DateTime.Now;
         public FailuresViewmodel(IIndustrialRepository industrialRepository)
         {
             _industrialRepository = industrialRepository;
@@ -19,6 +18,8 @@ namespace LW2.Viewmodel
             WeakReferenceMessenger.Default.Register<EmployeesChangedMessage>(this);
             WeakReferenceMessenger.Default.Register<EquipmentChangedMessage>(this);
         }
+
+        public DateTime Now => DateTime.Now;
 
         [ObservableProperty]
         private ObservableCollection<Failure>? _failures = null;
@@ -32,6 +33,10 @@ namespace LW2.Viewmodel
         [ObservableProperty]
         private Equipment? _newEquipment = null;
 
+        // todo selectable date
+        [ObservableProperty]
+        private DateTime _newDate = DateTime.Now;
+
         [RelayCommand]
         public async Task Delete(Failure ins)
         {
@@ -42,17 +47,31 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Add()
         {
-            // todo procedure for adding failure
-            // = await _industrialRepository.AddFailure();
+            if (NewEquipment is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Equipment not specified", "Ok");
+                return;
+            }
 
-            //Failures!.Add(newInspection);
+            var newFailure = new Failure()
+            {
+                Date = NewDate,
+                EquipmentId = NewEquipment.Id,
+                FailureReason = NewFailureReason,
+            };
+
+            await _industrialRepository.AddFailure(newFailure);
+
+            newFailure = await _industrialRepository.GetFailure(newFailure.Id);
+
+            Failures!.Add(newFailure!);
         }
 
         [RelayCommand]
         public async Task Update(Failure fail)
         {
-            // todo procedure for getting new one
-            //await _industrialRepository.UpdateFailure(fail);
+            // todo: update last inspecting employee?
+            await _industrialRepository.UpdateFailure(fail);
         }
 
         public override async Task OnAppearing()

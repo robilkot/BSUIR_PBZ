@@ -26,9 +26,6 @@ public partial class InspectionsTab : ContentPage
         var btn = (Button)sender;
         var grid = (Grid)btn.Parent;
 
-        var datePicker = (DatePicker)grid.FindByName("datePicker");
-        var dateLabel = (Label)grid.FindByName("dateLabel");
-
         var resultEntry = (Entry)grid.FindByName("resultEntry");
         var resultLabel = (Label)grid.FindByName("resultLabel");
 
@@ -48,15 +45,11 @@ public partial class InspectionsTab : ContentPage
 
         var inspection = (Inspection)grid.BindingContext;
 
-        // todo handle deleting foreign stuff
         var equ = (IEnumerable<Equipment>)equipmentPicker.ItemsSource;
         equipmentPicker.SelectedItem = equ.FirstOrDefault(t => t.Id == inspection.EquipmentId);
 
         var employees = (IEnumerable<Employee>)employeePicker.ItemsSource;
         employeePicker.SelectedItem = employees.FirstOrDefault(t => t.Id == inspection.EmployeeId);
-
-        datePicker.IsVisible = true;
-        dateLabel.IsVisible = false;
 
         resultEntry.IsVisible = true;
         resultLabel.IsVisible = false;
@@ -79,9 +72,6 @@ public partial class InspectionsTab : ContentPage
         var btn = (Button)sender;
         var grid = (Grid)btn.Parent;
 
-        var datePicker = (DatePicker)grid.FindByName("datePicker");
-        var dateLabel = (Label)grid.FindByName("dateLabel");
-
         var resultEntry = (Entry)grid.FindByName("resultEntry");
         var resultLabel = (Label)grid.FindByName("resultLabel");
 
@@ -96,9 +86,6 @@ public partial class InspectionsTab : ContentPage
 
         var editButton = (Button)grid.FindByName("editButton");
         var saveButton = (Button)grid.FindByName("saveButton");
-
-        datePicker.IsVisible = false;
-        dateLabel.IsVisible = true;
 
         resultEntry.IsVisible = false;
         resultLabel.IsVisible = true;

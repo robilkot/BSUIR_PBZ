@@ -39,7 +39,6 @@ public partial class FailuresTab : ContentPage
 
         var inspection = (Failure)grid.BindingContext;
 
-        // todo handle deleting foreign stuff
         var equ = (IEnumerable<Equipment>)equipmentPicker.ItemsSource;
         equipmentPicker.SelectedItem = equ.FirstOrDefault(t => t.Id == inspection.EquipmentId);
 

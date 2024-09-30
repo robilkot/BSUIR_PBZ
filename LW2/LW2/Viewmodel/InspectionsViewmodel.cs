@@ -11,7 +11,6 @@ namespace LW2.Viewmodel
     public partial class InspectionsViewmodel : BaseViewmodel, IRecipient<EmployeesChangedMessage>, IRecipient<EquipmentChangedMessage>
     {
         private readonly IIndustrialRepository _industrialRepository;
-        public DateTime Now => DateTime.Now;
         public InspectionsViewmodel(IIndustrialRepository industrialRepository)
         {
             _industrialRepository = industrialRepository;
@@ -51,16 +50,26 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Add()
         {
+            if(NewEmployee is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Employee not specified", "Ok");
+                return;
+            }
+            if (NewEquipment is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Equipment not specified", "Ok");
+                return;
+            }
+
             var newInspection = new Inspection()
             {
-                Date = Now,
                 EmployeeId = NewEmployee.Id,
                 EquipmentId = NewEquipment.Id,
                 FailureReason = NewFailureReason.Length == 0 ? null : NewFailureReason,
                 Result = NewResult,
             };
 
-            newInspection.Id = await _industrialRepository.AddInspection(newInspection);
+            await _industrialRepository.AddInspection(newInspection);
 
             newInspection = await _industrialRepository.GetInspection(newInspection.Id);
 

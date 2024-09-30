@@ -50,6 +50,17 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Add()
         {
+            if (NewEquType is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Equipment type not specified", "Ok");
+                return;
+            }
+            if (NewEquArea is null)
+            {
+                await Shell.Current.DisplayAlert("Error", "Area not specified", "Ok");
+                return;
+            }
+
             var newEquipment = new Equipment()
             {
                 Name = NewEquName,

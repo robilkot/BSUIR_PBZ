@@ -64,9 +64,9 @@ namespace LW2.Model.Services
         {
             return Task.FromResult<List<Employee>>([.. s_employees]);
         }
-        public async Task<Employee> GetEmployee(int id)
+        public Task<Employee?> GetEmployee(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(s_employees.FirstOrDefault(t => t.Id == id));
         }
         public Task<int> AddEmployee(Employee employee)
         {
@@ -103,9 +103,9 @@ namespace LW2.Model.Services
         {
             return Task.FromResult<List<ProductionArea>>([.. s_areas]);
         }
-        public async Task<ProductionArea> GetProductionArea(int id)
+        public Task<ProductionArea?> GetProductionArea(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(s_areas.FirstOrDefault(t => t.Id == id));
         }
         public Task<int> AddProductionArea(ProductionArea area)
         {
@@ -142,9 +142,9 @@ namespace LW2.Model.Services
         {
             return Task.FromResult<List<EquipmentType>>([.. s_equipmentTypes]);
         }
-        public async Task<EquipmentType> GetEquipmentType(int id)
+        public Task<EquipmentType?> GetEquipmentType(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(s_equipmentTypes.FirstOrDefault(t => t.Id == id));
         }
         public Task<int> AddEquipmentType(EquipmentType type)
         {
@@ -181,9 +181,9 @@ namespace LW2.Model.Services
         {
             return Task.FromResult<List<Equipment>>([.. s_equipment]);
         }
-        public async Task<Equipment> GetEquipment(int id)
+        public Task<Equipment?> GetEquipment(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(s_equipment.FirstOrDefault(t => t.Id == id));
         }
         public Task<int> AddEquipment(Equipment eq)
         {
@@ -221,13 +221,13 @@ namespace LW2.Model.Services
             return Task.FromResult<List<Inspection>>([.. s_inspections]);
         }
         // дата формирования отчета, инвентарный номер, название, тип оборудования, результат осмотра.
-        public async Task<List<Inspection>> GetInspections(int equipmentId)
+        public Task<List<Inspection>> GetInspections(int equipmentId)
         {
             throw new NotImplementedException();
         }
-        public async Task<Inspection> GetInspection(int id)
+        public Task<Inspection?> GetInspection(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(s_inspections.FirstOrDefault(t => t.Id == id));
         }
         public Task<int> AddInspection(Inspection inspection)
         {
@@ -271,7 +271,7 @@ namespace LW2.Model.Services
         }
         public Task<Failure?> GetFailure(int id)
         {
-            return Task.FromResult<Failure?>(s_failures.FirstOrDefault(f => f.Id == id));
+            return Task.FromResult(s_failures.FirstOrDefault(f => f.Id == id));
         }
         public Task<int> AddFailure(Failure failure)
         {

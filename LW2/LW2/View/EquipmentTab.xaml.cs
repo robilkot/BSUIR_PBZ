@@ -45,7 +45,6 @@ public partial class EquipmentTab : ContentPage
 
         var equipment = (Equipment)grid.BindingContext;
 
-        // todo handle deleting foreign stuff
         var types = (IEnumerable<EquipmentType>)typePicker.ItemsSource;
         typePicker.SelectedItem = types.FirstOrDefault(t => t.Id == equipment.Type);
 
