@@ -49,6 +49,16 @@ namespace LW2.Model.Services
             new() { Id = 6, Date = DateTime.Now, EmployeeId = 3, Employee = s_employees.First(e => e.Id == 3), EquipmentId = 2, Equipment = s_equipment.First(e => e.Id == 2), Result = "Fail", FailureReason = "IDC totally" },
             ];
 
+        private static readonly List<Failure> s_failures = [
+            new() { Id = 1, Date = DateTime.Now, LastInspectingEmployeeId = 1, LastInspectingEmployee = s_employees.First(e => e.Id == 1), EquipmentId = 1, Equipment = s_equipment.First(e => e.Id == 1), FailureReason = "IDC" },
+            new() { Id = 2, Date = DateTime.Now, LastInspectingEmployeeId = 1, LastInspectingEmployee = s_employees.First(e => e.Id == 1), EquipmentId = 2, Equipment = s_equipment.First(e => e.Id == 2), FailureReason = "IDK" },
+            new() { Id = 3, Date = DateTime.Now, LastInspectingEmployeeId = 2, LastInspectingEmployee = s_employees.First(e => e.Id == 2), EquipmentId = 3, Equipment = s_equipment.First(e => e.Id == 3), FailureReason = "No idea" },
+            new() { Id = 4, Date = DateTime.Now, LastInspectingEmployeeId = 2, LastInspectingEmployee = s_employees.First(e => e.Id == 2), EquipmentId = 4, Equipment = s_equipment.First(e => e.Id == 4), FailureReason = "Electro" },
+            new() { Id = 5, Date = DateTime.Now, LastInspectingEmployeeId = 3, LastInspectingEmployee = s_employees.First(e => e.Id == 3), EquipmentId = 1, Equipment = s_equipment.First(e => e.Id == 1), FailureReason = "Short wiring" },
+            new() { Id = 6, Date = DateTime.Now, LastInspectingEmployeeId = 3, LastInspectingEmployee = s_employees.First(e => e.Id == 3), EquipmentId = 2, Equipment = s_equipment.First(e => e.Id == 2), FailureReason = "Fire" },
+            ];
+
+
         #region Employees
         public Task<List<Employee>> GetEmployees()
         {
@@ -250,9 +260,9 @@ namespace LW2.Model.Services
         #endregion
 
         #region Failures
-        public async Task<List<Failure>> GetFailures()
+        public Task<List<Failure>> GetFailures()
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<Failure>>([.. s_failures]);
         }
         // дата, список (название оборудования, тип оборудования, название участка, причина отказа, дата отказа)
         public async Task<List<Failure>> GetFailures(ProductionArea area)
@@ -263,15 +273,33 @@ namespace LW2.Model.Services
         {
             throw new NotImplementedException();
         }
-        public async Task<int> AddFailure(Failure inspection)
+        public Task<int> AddFailure(Failure failure)
         {
-            throw new NotImplementedException();
+            int id = s_failures.Max(a => a.Id) + 1;
+
+            failure.Id = id;
+
+            s_failures.Add(failure);
+
+            return Task.FromResult(id);
         }
-        public async Task UpdateFailure(Failure inspection)
+        public Task UpdateFailure(Failure failure)
         {
+            _ = DeleteFailure(failure.Id);
+            s_failures.Add(failure);
+
+            return Task.CompletedTask;
         }
-        public async Task DeleteFailure(int id)
+        public Task DeleteFailure(int id)
         {
+            var type = s_failures.FirstOrDefault(a => a.Id == id);
+
+            if (type is not null)
+            {
+                s_failures.Remove(type);
+            }
+
+            return Task.CompletedTask;
         }
         #endregion
     }

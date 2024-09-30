@@ -28,6 +28,10 @@
             Title="Inspections"
             ContentTemplate="{DataTemplate view:InspectionsTab}"
             Route="InspectionsTab" />
+        <ShellContent
+            Title="Failures"
+            ContentTemplate="{DataTemplate view:FailuresTab}"
+            Route="FailuresTab" />
     </TabBar>
 
 </Shell>

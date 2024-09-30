@@ -33,7 +33,7 @@ namespace LW2.Viewmodel
         private string _newResult = string.Empty;
 
         [ObservableProperty]
-        private string? _newFailureReason = null;
+        private string _newFailureReason = string.Empty;
 
         [ObservableProperty]
         private Employee? _newEmployee = null;
@@ -58,7 +58,7 @@ namespace LW2.Viewmodel
                 Employee = NewEmployee,
                 EquipmentId = NewEquipment.Id,
                 Equipment = NewEquipment,
-                FailureReason = NewFailureReason,
+                FailureReason = NewFailureReason.Length == 0 ? null : NewFailureReason,
                 Result = NewResult,
             };
 
@@ -77,7 +77,10 @@ namespace LW2.Viewmodel
         {
             var inspections = Task.Run(async () =>
             {
-                Inspections ??= [.. await _industrialRepository.GetInspections()];
+                if(Inspections is null)
+                {
+                    await UpdateInspections();
+                }
             });
             var equ = Task.Run(async () =>
             {
@@ -97,6 +100,10 @@ namespace LW2.Viewmodel
             await Task.WhenAll(inspections, equ, empl);
         }
 
+        private async Task UpdateInspections()
+        {
+            Inspections = [.. await _industrialRepository.GetInspections()];
+        }
         private async Task UpdateEquipment()
         {
             Equipment = [.. await _industrialRepository.GetEquipment()];
@@ -109,6 +116,10 @@ namespace LW2.Viewmodel
         }
 
         public async void Receive(EquipmentChangedMessage message) => await UpdateEquipment();
-        public async void Receive(EmployeesChangedMessage message) => await UpdateEmployees();
+        public async void Receive(EmployeesChangedMessage message)
+        {
+            await UpdateEmployees();
+            await UpdateInspections(); // because employees may be deleted and become null in inspections
+        }
     }
 }
