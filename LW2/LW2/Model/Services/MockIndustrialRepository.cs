@@ -264,14 +264,14 @@ namespace LW2.Model.Services
         {
             return Task.FromResult<List<Failure>>([.. s_failures]);
         }
-        // дата, список (название оборудования, тип оборудования, название участка, причина отказа, дата отказа)
-        public async Task<List<Failure>> GetFailures(ProductionArea area)
+        // todo? дата, список (название оборудования, тип оборудования, название участка, причина отказа, дата отказа)
+        public Task<List<Failure>> GetFailures(ProductionArea area)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<List<Failure>>([..s_failures.Where(f => f.Equipment.ProductionArea == area.Id)]);
         }
-        public async Task<Failure> GetFailure(int id)
+        public Task<Failure?> GetFailure(int id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<Failure?>(s_failures.FirstOrDefault(f => f.Id == id));
         }
         public Task<int> AddFailure(Failure failure)
         {

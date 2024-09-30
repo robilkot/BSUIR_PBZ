@@ -50,19 +50,19 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Add()
         {
-            var newArea = new Equipment()
+            var newEquipment = new Equipment()
             {
                 Name = NewEquName,
                 Number = NewEquNumber,
                 Type = NewEquType.Id,
-                TypeNavigation = NewEquType,
                 ProductionArea = NewEquArea.Id,
-                ProductionAreaNavigation = NewEquArea,
             };
 
-            newArea.Id = await _industrialRepository.AddEquipment(newArea);
-            
-            Equipment!.Add(newArea);
+            newEquipment.Id = await _industrialRepository.AddEquipment(newEquipment);
+
+            newEquipment = await _industrialRepository.GetEquipment(newEquipment.Id);
+
+            Equipment!.Add(newEquipment!);
         }
 
         [RelayCommand]

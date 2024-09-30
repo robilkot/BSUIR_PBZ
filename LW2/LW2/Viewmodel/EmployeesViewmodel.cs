@@ -31,7 +31,7 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Delete(Employee area)
         {
-            await _industrialRepository.DeleteProductionArea(area.Id);
+            await _industrialRepository.DeleteEmployee(area.Id);
             Employees!.Remove(area);
 
             WeakReferenceMessenger.Default.Send(new EmployeesChangedMessage());
@@ -40,16 +40,18 @@ namespace LW2.Viewmodel
         [RelayCommand]
         public async Task Add()
         {
-            var newArea = new Employee()
+            var newEmployee = new Employee()
             {
                 Name = NewEmployeeName,
                 PersonnelNumber = NewEmployeePersonellNumber,
                 Position = NewEmployeePosition,
             };
 
-            newArea.Id = await _industrialRepository.AddEmployee(newArea);
+            newEmployee.Id = await _industrialRepository.AddEmployee(newEmployee);
 
-            Employees!.Add(newArea);
+            newEmployee = await _industrialRepository.GetEmployee(newEmployee.Id);
+
+            Employees!.Add(newEmployee!);
 
             WeakReferenceMessenger.Default.Send(new EmployeesChangedMessage());
         }

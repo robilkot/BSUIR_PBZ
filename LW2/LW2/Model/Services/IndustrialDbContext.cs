@@ -23,9 +23,6 @@ public partial class IndustrialDbContext : DbContext
 
     public virtual DbSet<ProductionArea> Productionareas { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySQL("server=127.0.0.1;uid=root;pwd=root;database=LW2");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Employee>(entity =>

@@ -23,9 +23,10 @@ namespace LW2
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddDbContextPool<IndustrialDbContext>(options => options.UseMySQL());
+            builder.Services.AddDbContextFactory<IndustrialDbContext>(options => options.UseMySQL("server=127.0.0.1;uid=root;pwd=root;database=LW2"));
 
-            builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
+            //builder.Services.AddTransient<IIndustrialRepository, MockIndustrialRepository>();
+            builder.Services.AddTransient<IIndustrialRepository, IndustrialRepository>();
 
             builder.Services.AddTransient<ProductionAreasTab>();
             builder.Services.AddTransient<ProductionAreasViewmodel>();

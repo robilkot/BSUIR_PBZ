@@ -55,16 +55,16 @@ namespace LW2.Viewmodel
             {
                 Date = Now,
                 EmployeeId = NewEmployee.Id,
-                Employee = NewEmployee,
                 EquipmentId = NewEquipment.Id,
-                Equipment = NewEquipment,
                 FailureReason = NewFailureReason.Length == 0 ? null : NewFailureReason,
                 Result = NewResult,
             };
 
             newInspection.Id = await _industrialRepository.AddInspection(newInspection);
 
-            Inspections!.Add(newInspection);
+            newInspection = await _industrialRepository.GetInspection(newInspection.Id);
+
+            Inspections!.Add(newInspection!);
         }
 
         [RelayCommand]
