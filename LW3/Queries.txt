@@ -1,0 +1,10 @@
+match (w:Wagon)-[:USED_IN]->(:Subway {name:"SPB Subway"}) return w.name
+match (w:Wagon)-[:USED_IN]->(:Subway {name:"Moscow Subway"}) where w.productionYear > 2007 return w.name
+match (c:Country {name:"Belarus"})<-[:LOCATED_IN]-(f:Factory)-[:MANUFACTURES]->(w:Wagon)-[:USED_IN]->(:Subway {name:"Minsk Subway"}) return w.name
+match (w:Wagon)<-[:HAS]-(s:Subway {name:"Moscow Subway"}) where not (w)-[:USED_IN]->(s) return w.name
+match (w:Wagon)<-[:HAS]-(s:Subway {name:"Moscow Subway"}) where not (w)<-[:HAS]-(:Subway{name: "SPB Subway"}) return w.name
+match (f:Factory)-[:MANUFACTURES]->(w:Wagon)-[:USED_IN]->(:Subway {name:"Minsk Subway"}) return f.name
+match (c:Country)<-[:LOCATED_IN]-(:Factory)-[:MANUFACTURES]->(w:Wagon)-[:USED_IN]->(:Subway {name:"SPB Subway"}) return distinct c.name
+match (:Country {name:"Russia"})<-[:LOCATED_IN]-(:Factory)-[:MANUFACTURES]->(:Wagon)-[:USED_IN]->(s:Subway) return distinct s.name
+match (w:Wagon)-[:BASED_ON]->(:Wagon {name:"81-717"}) return w.name
+match (w:Wagon)<-[r:HAS]-(:Subway {name:"Moscow Subway"}) where r.count > 100 return w.name
