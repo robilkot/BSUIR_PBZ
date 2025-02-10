@@ -1,0 +1,85 @@
+@startuml
+
+'skinparam linetype ortho
+skinparam nodesep 10
+skinparam ranksep 40
+
+package SC-Client {
+abstract class ScAgent
+class ScAddr
+class ScResult
+class ScModule
+}
+
+class Dataset 
+
+note bottom of Dataset {
+Implemented in framework chosen by developer
+}
+
+class FnnTrainingAgent {
++on_event(event_element: ScAddr, event_edge: ScAddr, action_element: ScAddr): ScResult
+}
+FnnTrainingAgent -|> ScAgent
+class FnnTrainingModule
+FnnTrainingModule -|> ScModule
+class TrainingParametersReader {
++get_training_params(action_addr: ScAddr): TrainingParameters
+}
+class FnnModelBuilder {
++build_model(params: TrainingParameters): Model
+}
+class FnnTrainer {
++train_model(model: Model, parameters: TrainingParameters)
++get_features_labels(df: Dataset, labels_column: string): features, labels
+}
+
+class TrainingParameters <<data>> {
++fnn_struct: FnnStruct
++dataset_struct: DatasetStruct
++epochs: int
++learning_rate: float
++batch_size: int
+}
+
+class FnnStruct <<data>> {
++network_address: ScAddr
++layers_configuration: Tuple[FnnLayerConfiguration]
+}
+
+class FnnLayerConfiguration <<data>> {
++address: ScAddr
++output_size: Option[int]
++activation_function: Option[string]
++input_size: Option[int]
+}
+
+class DatasetStruct <<data>> {
++dataset: Dataset
++labels_column: string
+}
+
+
+ScModule "*" *-- "*" ScAgent
+FnnLayerConfiguration ..> ScAddr: <<Use>>
+TrainingParametersReader ..> TrainingParameters: <<Use>>
+TrainingParametersReader ..> ScAddr: <<Use>>
+FnnModelBuilder ..> TrainingParameters: <<Use>>
+FnnTrainer ..> TrainingParameters: <<Use>>
+FnnTrainer ..> Dataset: <<Use>>
+
+FnnTrainingAgent .up.> TrainingParametersReader: <<Use>>
+FnnTrainingAgent .down.> FnnModelBuilder: <<Call>>
+FnnTrainingAgent .right.> FnnTrainer: <<Call>>
+FnnTrainingAgent ..> ScResult: <<Use>>
+
+FnnStruct o-- FnnLayerConfiguration
+TrainingParameters o-- FnnStruct
+TrainingParameters o-- DatasetStruct
+DatasetStruct o-- Dataset
+FnnStruct o-- ScAddr
+
+FnnTrainingModule "1" *-- "1" FnnTrainingAgent
+
+
+@enduml
